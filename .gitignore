@@ -1,0 +1,7 @@
+.idea/
+.gradle/
+build/
+*.jar
+
+# temporary plugin repo for testing
+/temp/
