@@ -2,9 +2,25 @@ package net.earthcomputer.dekotlinify.impl
 
 import org.objectweb.asm.tree.AbstractInsnNode
 import org.objectweb.asm.tree.InsnList
+import org.objectweb.asm.tree.MethodNode
 import java.util.TreeMap
 
 const val INTRINSICS = "kotlin/jvm/internal/Intrinsics"
+const val INTRINSICS_SURROGATAE = "net/earthcomputer/dekotlinify/surrogate/IntrinsicsSurrogate"
+
+fun insnListOf(vararg insns: AbstractInsnNode): InsnList {
+    val insnList = InsnList()
+    for (insn in insns) {
+        insnList.add(insn)
+    }
+    return insnList
+}
+
+fun MethodNode.copy(): MethodNode {
+    val copy = MethodNode(access, name, desc, signature, exceptions?.toTypedArray())
+    accept(copy)
+    return copy
+}
 
 inline fun InsnList.replace(crossinline func: ReplacementsProcessor.(AbstractInsnNode) -> Unit) {
     val insertBefore = TreeMap<AbstractInsnNode, InsnList>(Comparator.comparingInt { indexOf(it) })

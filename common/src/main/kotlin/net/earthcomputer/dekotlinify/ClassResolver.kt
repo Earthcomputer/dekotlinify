@@ -7,12 +7,22 @@ fun interface ClassResolver {
     fun resolve(internalName: String): ClassNode?
 }
 
-object LocalClassResolver : ClassResolver {
+internal object LocalClassResolver : ClassResolver {
     override fun resolve(internalName: String): ClassNode? {
-        return Sequence::class.java.classLoader.getResourceAsStream("$internalName.class")?.let {
+        return LocalClassResolver::class.java.classLoader.getResourceAsStream("$internalName.class")?.let {
             val node = ClassNode()
             ClassReader(it).accept(node, ClassReader.SKIP_FRAMES)
             node
+        }
+    }
+}
+
+internal object SurrogateClassResolver : ClassResolver {
+    override fun resolve(internalName: String): ClassNode? {
+        return if (internalName.startsWith("net/earthcomputer/dekotlinify/surrogate/")) {
+            LocalClassResolver.resolve(internalName)
+        } else {
+            null
         }
     }
 }

@@ -32,6 +32,9 @@ open class DekotlinifyTask : DefaultTask() {
     @get:Input
     var removeNullAssertions = false
 
+    @get:Input
+    var debug = false
+
     @get:OutputFile
     var output: Any? = null
 
@@ -42,6 +45,7 @@ open class DekotlinifyTask : DefaultTask() {
 
         val dekotlinify = Dekotlinify()
         dekotlinify.removeNullAssertions = removeNullAssertions
+        dekotlinify.debug = debug
         if (!useLocalClasspath) {
             dekotlinify.clearClassResolvers()
         }

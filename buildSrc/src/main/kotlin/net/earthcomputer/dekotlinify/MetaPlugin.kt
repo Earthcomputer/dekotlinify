@@ -22,6 +22,7 @@ private fun Project.doApply() {
     dependencies.apply {
         add("api", "org.ow2.asm:asm:9.2")
         add("api", "org.ow2.asm:asm-tree:9.2")
+        add("implementation", "org.ow2.asm:asm-util:9.2")
         add("implementation", "org.ow2.asm:asm-analysis:9.2")
         add("compileOnly", "org.jetbrains:annotations:22.0.0")
 
